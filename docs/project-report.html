@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>گزارش کامل پروژه کتابخانه الکترونیکی</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#1f2937;--muted:#6b7280;--primary:#2563eb;--primary-dark:#1e40af;--soft:#eff6ff;--border:#dbe3f0;--code-bg:#111827;--code-ink:#e5e7eb;--accent:#f59e0b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#eef4ff 0%,#f8fafc 45%,#fefce8 100%);color:var(--ink);font-family:"Vazirmatn","Tahoma","Arial",sans-serif;direction:rtl;line-height:2;font-size:16px}.page{max-width:980px;margin:40px auto;padding:48px 56px;background:var(--paper);border:1px solid var(--border);border-radius:24px;box-shadow:0 20px 55px rgba(31,41,55,.1)}.cover{text-align:center;padding:70px 56px}.badge{display:inline-block;padding:8px 18px;border-radius:999px;background:var(--soft);color:var(--primary-dark);font-weight:700;margin-bottom:20px}h1{font-size:34px;margin:14px 0 18px;color:var(--primary-dark);line-height:1.7}h2{font-size:25px;margin-top:42px;padding-bottom:10px;border-bottom:2px solid var(--border);color:var(--primary-dark)}h3{font-size:20px;margin-top:30px;color:#0f172a}p{text-align:justify;margin:12px 0}.meta{margin:34px auto 0;max-width:620px;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:#fbfdff}.meta div{display:flex;gap:16px;padding:14px 20px;border-bottom:1px solid var(--border)}.meta div:last-child{border-bottom:none}.meta strong{min-width:155px;color:var(--primary-dark)}ul,ol{padding-right:26px}li{margin:8px 0}.section-note{background:#fff7ed;border:1px solid #fed7aa;border-right:5px solid var(--accent);border-radius:16px;padding:16px 20px;margin:22px 0}table{width:100%;border-collapse:collapse;margin:20px 0;overflow:hidden;border-radius:14px;box-shadow:0 0 0 1px var(--border)}th,td{padding:12px 14px;border:1px solid var(--border);text-align:right;vertical-align:top}th{background:var(--soft);color:var(--primary-dark);font-weight:800}tr:nth-child(even) td{background:#fafcff}code{direction:ltr;unicode-bidi:embed;background:#eef2ff;color:#3730a3;padding:2px 6px;border-radius:6px;font-family:"Consolas","Courier New",monospace;font-size:.92em}pre{direction:ltr;text-align:left;background:var(--code-bg);color:var(--code-ink);padding:18px 20px;border-radius:16px;overflow-x:auto;line-height:1.75;margin:18px 0 26px;font-size:14px}pre code{background:transparent;color:inherit;padding:0}.er-box{direction:ltr;text-align:center;background:#f8fafc;border:1px dashed #94a3b8;border-radius:18px;padding:22px;margin:22px 0;font-family:"Consolas","Courier New",monospace;line-height:2.2}.footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:14px;text-align:center}hr{border:none;border-top:1px solid var(--border);margin:34px 0}@media print{body{background:#fff;font-size:14px}.page{box-shadow:none;border:none;margin:0;max-width:none;border-radius:0;padding:28px 34px;page-break-after:always}.page:last-child{page-break-after:auto}h2{page-break-after:avoid}table,pre{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="badge">گزارش پروژه پایگاه داده MySQL</div>
+  <h1>طراحی و پیاده‌سازی پایگاه داده کتابخانه الکترونیکی با MySQL</h1>
+  <div class="meta">
+    <div><strong>نام و نام خانوادگی:</strong><span>محمدماهان صفائیان</span></div>
+    <div><strong>موضوع پروژه:</strong><span>کتابخانه الکترونیکی</span></div>
+    <div><strong>درس:</strong><span>پایگاه داده</span></div>
+  </div>
+</section>
+<section class="page">
+  <h2>۱. معرفی پروژه</h2>
+  <p>در این پروژه، هدف طراحی و پیاده‌سازی یک پایگاه داده برای یک کتابخانه الکترونیکی است. این سامانه برای ذخیره‌سازی، مدیریت و جستجوی اطلاعات مربوط به کتاب‌ها طراحی می‌شود. در یک کتابخانه الکترونیکی، اطلاعاتی مانند عنوان کتاب، نویسنده، دسته‌بندی، مترجم، ناشر، سال انتشار، تعداد صفحات، تعداد چاپ و امتیاز کتاب اهمیت زیادی دارد.</p>
+  <p>با توجه به اینکه نگهداری این اطلاعات در یک فایل ساده یا جدول غیرنرمال می‌تواند باعث تکرار داده‌ها، سختی در جستجو، خطا در ویرایش اطلاعات و کاهش نظم پایگاه داده شود، در این پروژه تلاش شده است که ابتدا موجودیت‌های اصلی سیستم شناسایی شوند، سپس مدل ER طراحی شود و در ادامه این مدل به جدول‌های رابطه‌ای تبدیل گردد.</p>
+  <p>پس از طراحی جدول‌ها، پایگاه داده نرمال‌سازی می‌شود تا از تکرار غیرضروری اطلاعات جلوگیری شود. سپس جداول نهایی در محیط MySQL پیاده‌سازی شده و چندین پرس‌وجوی SQL برای بررسی عملکرد پایگاه داده اجرا می‌شود.</p>
+  <p>این پروژه می‌تواند برای مدیریت اطلاعات کتاب‌ها در یک کتابخانه، سایت معرفی کتاب یا سامانه جستجوی کتاب مورد استفاده قرار گیرد.</p>
+</section>
+
+
+<section class="page">
+  <h2>۲. سناریوی پروژه و نیازمندی‌های سیستم</h2>
+  <p>در این پروژه، یک سامانه کتابخانه الکترونیکی در نظر گرفته شده است که وظیفه آن مدیریت اطلاعات کتاب‌ها و اطلاعات مرتبط با آن‌ها است. در این سامانه، هر کتاب دارای مشخصاتی مانند عنوان، سال انتشار اصلی، امتیاز، تعداد صفحات و تعداد چاپ است. همچنین هر کتاب می‌تواند یک یا چند نویسنده داشته باشد و در یک یا چند دسته‌بندی قرار بگیرد.</p>
+  <p>از طرف دیگر، در کتابخانه الکترونیکی ممکن است برای یک کتاب، ترجمه‌ها یا نسخه‌های مختلفی وجود داشته باشد. هر نسخه می‌تواند دارای مترجم، ناشر، تعداد صفحات و تعداد چاپ متفاوت باشد. به همین دلیل، اطلاعات مربوط به مترجم و ناشر به صورت جداگانه در پایگاه داده ذخیره می‌شوند تا از تکرار داده‌ها جلوگیری شود و ساختار پایگاه داده منظم‌تر باشد.</p>
+  <p>هدف اصلی این سامانه، ایجاد یک پایگاه داده منظم و قابل جستجو برای کتاب‌ها است؛ به‌طوری که بتوان اطلاعات کتاب‌ها را ذخیره، دسته‌بندی و بازیابی کرد.</p>
+  <h3>نیازمندی‌های اصلی سیستم</h3>
+  <ol>
+    <li>ذخیره اطلاعات کتاب‌ها شامل عنوان، سال انتشار اصلی و امتیاز کتاب.</li>
+    <li>ذخیره اطلاعات نویسندگان و ارتباط آن‌ها با کتاب‌ها.</li>
+    <li>ذخیره اطلاعات دسته‌بندی‌ها و مشخص کردن دسته‌بندی هر کتاب.</li>
+    <li>ذخیره اطلاعات مترجمان کتاب‌ها.</li>
+    <li>ذخیره اطلاعات ناشران.</li>
+    <li>ثبت نسخه‌ها یا ترجمه‌های مختلف هر کتاب.</li>
+    <li>امکان جستجوی کتاب‌ها بر اساس عنوان، نویسنده، دسته‌بندی، مترجم یا ناشر.</li>
+    <li>امکان نمایش کتاب‌های مربوط به یک دسته‌بندی خاص.</li>
+    <li>امکان نمایش کتاب‌های یک نویسنده خاص.</li>
+    <li>امکان نمایش کتاب‌هایی که امتیاز بالاتری دارند.</li>
+    <li>امکان نمایش اطلاعات کامل هر کتاب همراه با نویسنده، مترجم، ناشر و دسته‌بندی.</li>
+  </ol>
+  <h3>محدوده پروژه</h3>
+  <p>در این پروژه تمرکز اصلی بر طراحی پایگاه داده، مدل ER، تبدیل مدل ER به جدول‌های رابطه‌ای، نرمال‌سازی و پیاده‌سازی در MySQL است. بنابراین طراحی رابط کاربری یا برنامه گرافیکی برای سیستم در محدوده این پروژه قرار ندارد و تمرکز پروژه بر بخش پایگاه داده است.</p>
+</section>
+
+
+<section class="page">
+  <h2>۳. شناسایی موجودیت‌ها و ویژگی‌ها</h2>
+  <p>در این مرحله، موجودیت‌های اصلی سامانه کتابخانه الکترونیکی شناسایی می‌شوند. موجودیت‌ها بخش‌های اصلی سیستم هستند که باید اطلاعات آن‌ها در پایگاه داده ذخیره شود. با توجه به موضوع پروژه، موجودیت‌های اصلی شامل کتاب، نویسنده، دسته‌بندی، مترجم، ناشر و نسخه کتاب هستند.</p>
+  <h3>۳-۱. موجودیت Book / کتاب</h3>
+  <table><tr><th>ویژگی</th><th>توضیح</th></tr><tr><td><code>book_id</code></td><td>شناسه کتاب، کلید اصلی</td></tr><tr><td><code>title</code></td><td>عنوان کتاب</td></tr><tr><td><code>original_year</code></td><td>سال انتشار اصلی کتاب</td></tr><tr><td><code>rating</code></td><td>امتیاز کتاب</td></tr></table>
+  <h3>۳-۲. موجودیت Author / نویسنده</h3>
+  <p>این موجودیت برای ذخیره اطلاعات نویسندگان استفاده می‌شود. از آن‌جایی که ممکن است یک نویسنده چندین کتاب داشته باشد و همچنین یک کتاب توسط چند نویسنده نوشته شده باشد، اطلاعات نویسندگان در جدول جداگانه ذخیره می‌شود.</p>
+  <table><tr><th>ویژگی</th><th>توضیح</th></tr><tr><td><code>author_id</code></td><td>شناسه نویسنده، کلید اصلی</td></tr><tr><td><code>author_name</code></td><td>نام نویسنده</td></tr></table>
+  <h3>۳-۳. موجودیت Category / دسته‌بندی</h3>
+  <p>این موجودیت برای ذخیره دسته‌بندی‌های مختلف کتاب‌ها استفاده می‌شود. برای مثال، یک کتاب می‌تواند در دسته‌هایی مانند رمان، فلسفه، روان‌شناسی، تاریخ، علمی یا ادبیات قرار بگیرد.</p>
+  <table><tr><th>ویژگی</th><th>توضیح</th></tr><tr><td><code>category_id</code></td><td>شناسه دسته‌بندی، کلید اصلی</td></tr><tr><td><code>category_name</code></td><td>نام دسته‌بندی</td></tr></table>
+  <h3>۳-۴. موجودیت Translator / مترجم</h3>
+  <p>در کتابخانه الکترونیکی، بعضی از کتاب‌ها ترجمه‌شده هستند و ممکن است یک کتاب توسط مترجمان مختلفی ترجمه شده باشد. برای جلوگیری از تکرار نام مترجمان، این اطلاعات در یک موجودیت جداگانه ذخیره می‌شود.</p>
+  <table><tr><th>ویژگی</th><th>توضیح</th></tr><tr><td><code>translator_id</code></td><td>شناسه مترجم، کلید اصلی</td></tr><tr><td><code>translator_name</code></td><td>نام مترجم</td></tr></table>
+  <h3>۳-۵. موجودیت Publisher / ناشر</h3>
+  <table><tr><th>ویژگی</th><th>توضیح</th></tr><tr><td><code>publisher_id</code></td><td>شناسه ناشر، کلید اصلی</td></tr><tr><td><code>publisher_name</code></td><td>نام ناشر</td></tr></table>
+  <h3>۳-۶. موجودیت Book_Edition / نسخه کتاب</h3>
+  <table><tr><th>ویژگی</th><th>توضیح</th></tr><tr><td><code>edition_id</code></td><td>شناسه نسخه، کلید اصلی</td></tr><tr><td><code>book_id</code></td><td>شناسه کتاب، کلید خارجی</td></tr><tr><td><code>translator_id</code></td><td>شناسه مترجم، کلید خارجی</td></tr><tr><td><code>publisher_id</code></td><td>شناسه ناشر، کلید خارجی</td></tr><tr><td><code>page_count</code></td><td>تعداد صفحات</td></tr><tr><td><code>print_count</code></td><td>تعداد چاپ</td></tr></table>
+  <h3>۳-۷. موجودیت‌های واسط</h3>
+  <p>به دلیل وجود رابطه چند به چند بین بعضی از موجودیت‌ها، لازم است از جدول‌های واسط استفاده شود. جدول‌های واسط این پروژه شامل <code>Book_Author</code> و <code>Book_Category</code> هستند.</p>
+</section>
+
+
+<section class="page">
+  <h2>۴. مدل ER پروژه</h2>
+  <p>پس از شناسایی موجودیت‌ها و ویژگی‌های اصلی سامانه، در این مرحله مدل ER یا مدل موجودیت-رابطه طراحی می‌شود. مدل ER نشان می‌دهد که هر موجودیت چه ویژگی‌هایی دارد و موجودیت‌ها چگونه با یکدیگر ارتباط برقرار می‌کنند.</p>
+  <h3>موجودیت‌های اصلی</h3>
+  <ul><li>کتاب</li><li>نویسنده</li><li>دسته‌بندی</li><li>مترجم</li><li>ناشر</li><li>نسخه کتاب</li></ul>
+  <h3>رابطه بین Book و Author</h3>
+  <p>بین موجودیت کتاب و نویسنده رابطه چند به چند وجود دارد. یعنی یک کتاب می‌تواند توسط یک یا چند نویسنده نوشته شده باشد و یک نویسنده نیز می‌تواند چندین کتاب مختلف نوشته باشد. برای پیاده‌سازی این رابطه، از جدول واسط <code>Book_Author</code> استفاده می‌شود.</p>
+  <h3>رابطه بین Book و Category</h3>
+  <p>بین موجودیت کتاب و دسته‌بندی نیز رابطه چند به چند وجود دارد. یعنی یک کتاب می‌تواند در یک یا چند دسته‌بندی قرار بگیرد و هر دسته‌بندی نیز می‌تواند شامل تعداد زیادی کتاب باشد. برای پیاده‌سازی این رابطه، از جدول واسط <code>Book_Category</code> استفاده می‌شود.</p>
+  <h3>رابطه بین Book و Book_Edition</h3>
+  <p>بین موجودیت کتاب و نسخه کتاب رابطه یک به چند وجود دارد. یعنی هر کتاب می‌تواند چندین نسخه یا ترجمه مختلف داشته باشد، اما هر نسخه مربوط به یک کتاب مشخص است.</p>
+  <h3>رابطه بین Translator و Book_Edition</h3>
+  <p>بین موجودیت مترجم و نسخه کتاب رابطه یک به چند وجود دارد. یعنی یک مترجم می‌تواند چندین کتاب یا نسخه مختلف را ترجمه کرده باشد، اما هر نسخه کتاب در این طراحی فقط به یک مترجم مشخص مرتبط است.</p>
+  <h3>رابطه بین Publisher و Book_Edition</h3>
+  <p>بین موجودیت ناشر و نسخه کتاب رابطه یک به چند وجود دارد. یعنی یک ناشر می‌تواند چندین نسخه از کتاب‌های مختلف را منتشر کند، اما هر نسخه کتاب در این طراحی فقط به یک ناشر مشخص مربوط است.</p>
+  <h3>نمایش متنی مدل ER</h3>
+  <div class="er-box">Book 1:N Book_Author N:1 Author<br>Book 1:N Book_Category N:1 Category<br>Book 1:N Book_Edition<br>Translator 1:N Book_Edition<br>Publisher 1:N Book_Edition</div>
+  <p>این طراحی باعث می‌شود اطلاعات تکراری کاهش پیدا کند، ساختار پایگاه داده منظم‌تر شود و جستجو و مدیریت اطلاعات کتاب‌ها ساده‌تر انجام شود.</p>
+</section>
+
+
+<section class="page">
+  <h2>۵. تبدیل مدل ER به جدول‌های رابطه‌ای</h2>
+  <p>پس از طراحی مدل ER، باید موجودیت‌ها و رابطه‌های موجود در آن به جدول‌های رابطه‌ای تبدیل شوند. در مدل رابطه‌ای، هر موجودیت به یک جدول تبدیل می‌شود و ویژگی‌های آن موجودیت به عنوان ستون‌های جدول در نظر گرفته می‌شوند.</p>
+  <table><tr><th>نام جدول</th><th>کاربرد</th><th>کلید اصلی</th></tr>
+  <tr><td><code>Books</code></td><td>ذخیره اطلاعات اصلی کتاب‌ها</td><td><code>book_id</code></td></tr>
+  <tr><td><code>Authors</code></td><td>ذخیره اطلاعات نویسندگان</td><td><code>author_id</code></td></tr>
+  <tr><td><code>Book_Authors</code></td><td>ارتباط بین کتاب‌ها و نویسندگان</td><td><code>book_id, author_id</code></td></tr>
+  <tr><td><code>Categories</code></td><td>ذخیره دسته‌بندی‌های کتاب‌ها</td><td><code>category_id</code></td></tr>
+  <tr><td><code>Book_Categories</code></td><td>ارتباط بین کتاب‌ها و دسته‌بندی‌ها</td><td><code>book_id, category_id</code></td></tr>
+  <tr><td><code>Translators</code></td><td>ذخیره اطلاعات مترجمان</td><td><code>translator_id</code></td></tr>
+  <tr><td><code>Publishers</code></td><td>ذخیره اطلاعات ناشران</td><td><code>publisher_id</code></td></tr>
+  <tr><td><code>Book_Editions</code></td><td>ذخیره نسخه‌ها یا ترجمه‌های مختلف کتاب‌ها</td><td><code>edition_id</code></td></tr></table>
+  <p>با این تبدیل، مدل ER به ساختار رابطه‌ای تبدیل می‌شود و آماده پیاده‌سازی در MySQL خواهد بود.</p>
+</section>
+
+
+<section class="page">
+  <h2>۶. نرمال‌سازی جداول</h2>
+  <p>نرمال‌سازی یکی از مراحل مهم در طراحی پایگاه داده رابطه‌ای است. هدف از نرمال‌سازی، کاهش تکرار داده‌ها، جلوگیری از ناسازگاری اطلاعات و افزایش نظم در ساختار پایگاه داده است.</p>
+  <h3>۶-۱. حالت اولیه داده‌ها</h3>
+  <p>در حالت اولیه، اگر بخواهیم همه اطلاعات کتاب‌ها را در یک جدول ذخیره کنیم، جدول می‌تواند شامل عنوان کتاب، نویسنده، دسته‌بندی، مترجم، ناشر، سال انتشار، تعداد صفحات، تعداد چاپ و امتیاز باشد. این ساختار ساده است، اما از نظر طراحی پایگاه داده مناسب نیست؛ زیرا اطلاعات زیادی در آن تکرار می‌شود.</p>
+  <h3>۶-۲. نرمال‌سازی سطح اول: 1NF</h3>
+  <p>یک جدول زمانی در سطح اول نرمال‌سازی یا 1NF قرار دارد که هر ستون فقط یک مقدار اتمی داشته باشد و در هر خانه جدول، چند مقدار هم‌زمان ذخیره نشود. در این پروژه، به جای ذخیره چند نویسنده یا چند دسته‌بندی در یک ستون، از جدول‌های واسط <code>Book_Authors</code> و <code>Book_Categories</code> استفاده شده است.</p>
+  <h3>۶-۳. نرمال‌سازی سطح دوم: 2NF</h3>
+  <p>یک جدول زمانی در سطح دوم نرمال‌سازی یا 2NF قرار دارد که ابتدا در 1NF باشد و سپس همه ویژگی‌های غیرکلیدی به کلید اصلی جدول وابستگی کامل داشته باشند. در این پروژه، اطلاعات مربوط به نویسنده، دسته‌بندی، مترجم و ناشر در جدول‌های جداگانه ذخیره شده‌اند.</p>
+  <h3>۶-۴. نرمال‌سازی سطح سوم: 3NF</h3>
+  <p>یک جدول زمانی در سطح سوم نرمال‌سازی یا 3NF قرار دارد که ابتدا در 2NF باشد و وابستگی انتقالی در آن وجود نداشته باشد. در این پروژه، نام ناشر در جدول <code>Book_Editions</code> ذخیره نشده است، بلکه فقط <code>publisher_id</code> در این جدول قرار دارد و نام ناشر در جدول جداگانه <code>Publishers</code> نگهداری می‌شود.</p>
+  <div class="section-note">در نتیجه، پایگاه داده طراحی‌شده برای پروژه کتابخانه الکترونیکی تا سطح سوم نرمال‌سازی یعنی 3NF نرمال شده است.</div>
+</section>
+
+
+<section class="page">
+  <h2>۷. پیاده‌سازی پایگاه داده در MySQL</h2>
+  <p>پس از طراحی مدل ER، تبدیل آن به جدول‌های رابطه‌ای و نرمال‌سازی جداول، در این مرحله پایگاه داده در محیط MySQL پیاده‌سازی می‌شود. برای این کار ابتدا یک پایگاه داده با نام <code>electronic_library_db</code> ایجاد می‌کنیم و سپس جدول‌های مورد نیاز پروژه را در آن می‌سازیم.</p>
+  <h3>۷-۱. ساخت پایگاه داده</h3>
+  <pre><code>CREATE DATABASE electronic_library_db;
+
+USE electronic_library_db;</code></pre>
+  <h3>۷-۲. کد کامل ساخت جدول‌ها</h3>
+  <pre><code>CREATE TABLE Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    original_year INT,
+    rating DECIMAL(3,2)
+);
+
+CREATE TABLE Authors (
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    author_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Book_Authors (
+    book_id INT,
+    author_id INT,
+    PRIMARY KEY (book_id, author_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+);
+
+CREATE TABLE Categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Book_Categories (
+    book_id INT,
+    category_id INT,
+    PRIMARY KEY (book_id, category_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+);
+
+CREATE TABLE Translators (
+    translator_id INT AUTO_INCREMENT PRIMARY KEY,
+    translator_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Publishers (
+    publisher_id INT AUTO_INCREMENT PRIMARY KEY,
+    publisher_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Book_Editions (
+    edition_id INT AUTO_INCREMENT PRIMARY KEY,
+    book_id INT NOT NULL,
+    translator_id INT,
+    publisher_id INT,
+    page_count INT,
+    print_count INT,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (translator_id) REFERENCES Translators(translator_id),
+    FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
+);</code></pre>
+  <p>با اجرای این دستورات در MySQL، پایگاه داده پروژه کتابخانه الکترونیکی ساخته می‌شود و آماده ورود داده‌های نمونه و اجرای پرس‌وجوها خواهد بود.</p>
+</section>
+
+
+<section class="page">
+  <h2>۸. ورود داده‌های نمونه در پایگاه داده</h2>
+  <p>پس از ساخت پایگاه داده و جدول‌ها، در این مرحله چند داده نمونه وارد جدول‌ها می‌شود تا بتوان عملکرد پایگاه داده و پرس‌وجوهای SQL را بررسی کرد.</p>
+  <pre><code>SET NAMES utf8mb4;</code></pre>
+  <h3>۸-۱. ورود داده در جدول Books</h3>
+  <pre><code>INSERT INTO Books (title, original_year, rating) VALUES
+('جنایت و مکافات', 1866, 4.80),
+('برادران کارامازوف', 1880, 4.90),
+('1984', 1949, 4.70),
+('قلعه حیوانات', 1945, 4.50),
+('شازده کوچولو', 1943, 4.60),
+('کیمیاگر', 1988, 4.20),
+('بیگانه', 1942, 4.40),
+('انسان در جستجوی معنا', 1946, 4.80),
+('دنیای سوفی', 1991, 4.30),
+('بوف کور', 1937, 4.10);</code></pre>
+  <h3>۸-۲. ورود داده در جدول Authors</h3>
+  <pre><code>INSERT INTO Authors (author_name) VALUES
+('فئودور داستایوفسکی'),
+('جورج اورول'),
+('آنتوان دو سنت اگزوپری'),
+('پائولو کوئیلو'),
+('آلبر کامو'),
+('ویکتور فرانکل'),
+('یوستین گردر'),
+('صادق هدایت');</code></pre>
+  <h3>۸-۳. ورود داده در جدول Categories</h3>
+  <pre><code>INSERT INTO Categories (category_name) VALUES
+('رمان'),
+('ادبیات کلاسیک'),
+('فلسفه'),
+('روان‌شناسی'),
+('داستان تمثیلی'),
+('ادبیات ایران'),
+('ادبیات جهان');</code></pre>
+  <h3>۸-۴. ورود داده در جدول Translators و Publishers</h3>
+  <pre><code>INSERT INTO Translators (translator_name) VALUES
+('مهری آهی'),
+('سروش حبیبی'),
+('صالح حسینی'),
+('احمد شاملو'),
+('آرش حجازی'),
+('خشایار دیهیمی'),
+('نهال تجدد'),
+('بدون مترجم');
+
+INSERT INTO Publishers (publisher_name) VALUES
+('نشر نیلوفر'),
+('نشر چشمه'),
+('نشر ماهی'),
+('انتشارات نگاه'),
+('نشر قطره'),
+('نشر مرکز'),
+('نشر نی');</code></pre>
+  <h3>۸-۵. ارتباط کتاب‌ها با نویسندگان و دسته‌بندی‌ها</h3>
+  <pre><code>INSERT INTO Book_Authors (book_id, author_id) VALUES
+(1, 1), (2, 1), (3, 2), (4, 2), (5, 3),
+(6, 4), (7, 5), (8, 6), (9, 7), (10, 8);
+
+INSERT INTO Book_Categories (book_id, category_id) VALUES
+(1, 1), (1, 2), (2, 1), (2, 2), (3, 1),
+(3, 3), (4, 5), (5, 7), (6, 1), (7, 3),
+(8, 4), (9, 3), (10, 6);</code></pre>
+  <h3>۸-۶. ورود داده در جدول Book_Editions</h3>
+  <pre><code>INSERT INTO Book_Editions (book_id, translator_id, publisher_id, page_count, print_count) VALUES
+(1, 1, 1, 720, 12),
+(2, 2, 1, 980, 8),
+(3, 3, 2, 350, 15),
+(4, 4, 3, 160, 20),
+(5, 4, 4, 120, 25),
+(6, 5, 5, 240, 18),
+(7, 6, 6, 180, 10),
+(8, 7, 7, 220, 14),
+(9, 6, 6, 560, 9),
+(10, 8, 4, 130, 30);</code></pre>
+</section>
+
+
+<section class="page">
+  <h2>۹. طراحی و اجرای پرس‌وجوهای SQL</h2>
+  <p>پس از ساخت جدول‌ها و ورود داده‌های نمونه، در این مرحله چند پرس‌وجوی SQL طراحی و اجرا می‌شود. هدف از این پرس‌وجوها بررسی عملکرد پایگاه داده و بازیابی اطلاعات مختلف از جدول‌ها است.</p>
+  <h3>۹-۱. نمایش همه کتاب‌ها</h3><pre><code>SELECT * FROM Books;</code></pre>
+  <h3>۹-۲. نمایش عنوان کتاب‌ها همراه با نام نویسنده</h3><pre><code>SELECT b.title, a.author_name
+FROM Books b
+JOIN Book_Authors ba ON b.book_id = ba.book_id
+JOIN Authors a ON ba.author_id = a.author_id;</code></pre>
+  <h3>۹-۳. نمایش کتاب‌های یک نویسنده خاص</h3><pre><code>SELECT b.title, a.author_name
+FROM Books b
+JOIN Book_Authors ba ON b.book_id = ba.book_id
+JOIN Authors a ON ba.author_id = a.author_id
+WHERE a.author_name = 'فئودور داستایوفسکی';</code></pre>
+  <h3>۹-۴. نمایش کتاب‌ها بر اساس دسته‌بندی</h3><pre><code>SELECT b.title, c.category_name
+FROM Books b
+JOIN Book_Categories bc ON b.book_id = bc.book_id
+JOIN Categories c ON bc.category_id = c.category_id
+WHERE c.category_name = 'رمان';</code></pre>
+  <h3>۹-۵. نمایش کتاب‌های با امتیاز بالا</h3><pre><code>SELECT title, rating
+FROM Books
+WHERE rating > 4.50;</code></pre>
+  <h3>۹-۶. نمایش کتاب‌ها همراه با مترجم و ناشر</h3><pre><code>SELECT b.title, t.translator_name, p.publisher_name
+FROM Book_Editions e
+JOIN Books b ON e.book_id = b.book_id
+JOIN Translators t ON e.translator_id = t.translator_id
+JOIN Publishers p ON e.publisher_id = p.publisher_id;</code></pre>
+  <h3>۹-۷. شمارش تعداد کتاب‌ها در هر دسته‌بندی</h3><pre><code>SELECT c.category_name, COUNT(b.book_id) AS book_count
+FROM Categories c
+JOIN Book_Categories bc ON c.category_id = bc.category_id
+JOIN Books b ON bc.book_id = b.book_id
+GROUP BY c.category_name;</code></pre>
+  <h3>۹-۸. محاسبه میانگین امتیاز کتاب‌ها در هر دسته‌بندی</h3><pre><code>SELECT c.category_name, AVG(b.rating) AS average_rating
+FROM Categories c
+JOIN Book_Categories bc ON c.category_id = bc.category_id
+JOIN Books b ON bc.book_id = b.book_id
+GROUP BY c.category_name;</code></pre>
+  <h3>۹-۹. نمایش کتاب‌ها به ترتیب امتیاز</h3><pre><code>SELECT title, rating
+FROM Books
+ORDER BY rating DESC;</code></pre>
+  <h3>۹-۱۰. جستجوی کتاب بر اساس بخشی از عنوان</h3><pre><code>SELECT *
+FROM Books
+WHERE title LIKE '%جنایت%';</code></pre>
+  <p>این پرس‌وجوها نشان می‌دهند که پایگاه داده طراحی‌شده می‌تواند اطلاعات کتاب‌ها را بر اساس نویسنده، دسته‌بندی، امتیاز، مترجم، ناشر و عنوان جستجو کند.</p>
+</section>
+
+
+<section class="page">
+  <h2>۱۰. نتیجه‌گیری</h2>
+  <p>در این پروژه، طراحی و پیاده‌سازی پایگاه داده یک کتابخانه الکترونیکی انجام شد. هدف اصلی پروژه، ایجاد یک ساختار منظم برای ذخیره‌سازی و مدیریت اطلاعات مربوط به کتاب‌ها، نویسندگان، دسته‌بندی‌ها، مترجمان، ناشران و نسخه‌های مختلف کتاب بود.</p>
+  <p>در ابتدا، سناریوی پروژه تعریف شد و نیازمندی‌های اصلی سیستم مشخص گردید. سپس موجودیت‌های اصلی پروژه شناسایی شدند و برای هر موجودیت، ویژگی‌ها و کلیدهای اصلی تعیین شد. پس از آن، مدل ER برای نمایش ارتباط بین موجودیت‌ها طراحی شد.</p>
+  <p>در مرحله بعد، مدل ER به جدول‌های رابطه‌ای تبدیل شد. برای رابطه‌های چند به چند، مانند رابطه بین کتاب و نویسنده و همچنین رابطه بین کتاب و دسته‌بندی، از جدول‌های واسط استفاده شد. این کار باعث شد ارتباط بین داده‌ها دقیق‌تر و منظم‌تر پیاده‌سازی شود.</p>
+  <p>سپس جداول پایگاه داده نرمال‌سازی شدند. با انجام نرمال‌سازی تا سطح سوم یعنی 3NF، تکرار داده‌ها کاهش یافت و از ایجاد ناسازگاری در اطلاعات جلوگیری شد.</p>
+  <p>در ادامه، پایگاه داده در محیط MySQL پیاده‌سازی شد. جدول‌ها با استفاده از دستورات SQL ساخته شدند و برای ایجاد ارتباط بین آن‌ها از کلیدهای اصلی و کلیدهای خارجی استفاده شد. سپس تعدادی داده نمونه وارد پایگاه داده شد تا امکان اجرای پرس‌وجوها فراهم شود.</p>
+  <p>در بخش پایانی پروژه، چندین پرس‌وجوی SQL طراحی و اجرا شد. این پرس‌وجوها شامل نمایش اطلاعات کتاب‌ها، نمایش کتاب‌ها همراه با نویسنده، جستجو بر اساس دسته‌بندی، نمایش کتاب‌های با امتیاز بالا، نمایش مترجم و ناشر کتاب‌ها، شمارش تعداد کتاب‌ها در هر دسته‌بندی و محاسبه میانگین امتیاز کتاب‌ها بود.</p>
+  <div class="section-note">در نتیجه، پایگاه داده طراحی‌شده می‌تواند اطلاعات مربوط به کتابخانه الکترونیکی را به صورت منظم ذخیره و بازیابی کند. این پروژه نشان می‌دهد که با استفاده از مدل ER، نرمال‌سازی و پیاده‌سازی صحیح در MySQL می‌توان یک پایگاه داده کاربردی، قابل توسعه و استاندارد برای مدیریت اطلاعات کتاب‌ها طراحی کرد.</div>
+</section>
+<section class="page"><div class="footer">تهیه شده برای پروژه پایگاه داده MySQL — کتابخانه الکترونیکی</div></section>
+</body>
+</html>

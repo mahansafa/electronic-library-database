@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نمودار ER کتابخانه الکترونیکی - نسخه نهایی</title>
+
+  <style>
+    :root {
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #64748b;
+      --border: #d8e2ef;
+      --line: #334155;
+
+      --blue-bg: #eff6ff;
+      --blue: #2563eb;
+
+      --green-bg: #ecfdf5;
+      --green: #10b981;
+
+      --orange-bg: #fff7ed;
+      --orange: #f97316;
+
+      --purple-bg: #f5f3ff;
+      --purple: #7c3aed;
+
+      --gray-bg: #f8fafc;
+      --gray: #64748b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #eef4ff 0%, #f8fafc 52%, #fff7ed 100%);
+      color: var(--ink);
+      font-family: Tahoma, Arial, sans-serif;
+      direction: rtl;
+    }
+
+    .page {
+      width: 1500px;
+      max-width: calc(100vw - 28px);
+      margin: 26px auto;
+      padding: 28px 30px 34px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 18px 55px rgba(15, 23, 42, 0.10);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 18px;
+      border-radius: 999px;
+      background: var(--blue-bg);
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    h1 {
+      margin: 6px 0 7px;
+      color: #172554;
+      font-size: 31px;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .diagram {
+      position: relative;
+      width: 1400px;
+      height: 940px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.07), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(249, 115, 22, 0.07), transparent 32%),
+        #fbfdff;
+    }
+
+    .lines {
+      position: absolute;
+      inset: 0;
+      width: 1400px;
+      height: 940px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .line {
+      stroke: var(--line);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .entity {
+      position: absolute;
+      z-index: 2;
+      background: white;
+      border: 2px solid var(--gray);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.10);
+      text-align: right;
+      direction: rtl;
+    }
+
+    .entity-title {
+      padding: 13px 16px 11px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 1px solid rgba(100, 116, 139, 0.22);
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .fields {
+      margin: 0;
+      padding: 12px 16px 14px;
+      list-style: none;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .fields li {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(100, 116, 139, 0.25);
+      font-size: 14px;
+    }
+
+    .fields li:last-child { border-bottom: none; }
+
+    .key {
+      text-align: center;
+      font-weight: 800;
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      direction: ltr;
+    }
+
+    .normal .key {
+      color: #64748b;
+      background: #f1f5f9;
+    }
+
+    .pk .key {
+      color: #92400e;
+      background: #fef3c7;
+    }
+
+    .fk .key {
+      color: #1d4ed8;
+      background: #dbeafe;
+    }
+
+    .field-name {
+      direction: ltr;
+      text-align: left;
+      font-family: Consolas, "Courier New", monospace;
+      font-weight: 700;
+      color: #1e293b;
+      white-space: nowrap;
+    }
+
+    .pk .field-name { color: #b45309; }
+    .fk .field-name { color: #1d4ed8; }
+
+    .book {
+      width: 270px;
+      left: 565px;
+      top: 285px;
+      background: var(--blue-bg);
+      border-color: var(--blue);
+    }
+
+    .junction {
+      width: 270px;
+      background: var(--gray-bg);
+      border-color: var(--gray);
+    }
+
+    .book-author {
+      left: 950px;
+      top: 105px;
+    }
+
+    .book-category {
+      left: 180px;
+      top: 105px;
+    }
+
+    .author {
+      width: 250px;
+      left: 1040px;
+      top: 390px;
+      background: var(--green-bg);
+      border-color: var(--green);
+    }
+
+    .category {
+      width: 250px;
+      left: 110px;
+      top: 390px;
+      background: var(--green-bg);
+      border-color: var(--green);
+    }
+
+    .edition {
+      width: 300px;
+      left: 550px;
+      top: 620px;
+      background: var(--purple-bg);
+      border-color: var(--purple);
+    }
+
+    .translator {
+      width: 265px;
+      left: 170px;
+      top: 740px;
+      background: var(--orange-bg);
+      border-color: var(--orange);
+    }
+
+    .publisher {
+      width: 265px;
+      left: 965px;
+      top: 740px;
+      background: var(--orange-bg);
+      border-color: var(--orange);
+    }
+
+    .cardinality {
+      position: absolute;
+      z-index: 4;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+      direction: ltr;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 12px;
+      width: 1400px;
+      max-width: 100%;
+      margin: 18px auto 0;
+    }
+
+    .legend-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      color: #334155;
+      font-size: 14px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 11px;
+      height: 11px;
+      border-radius: 4px;
+      margin-left: 7px;
+      vertical-align: middle;
+    }
+
+    .dot.blue { background: var(--blue); }
+    .dot.green { background: var(--green); }
+    .dot.orange { background: var(--orange); }
+    .dot.purple { background: var(--purple); }
+
+    .relations {
+      width: 1400px;
+      max-width: 100%;
+      margin: 16px auto 0;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .relations-title {
+      padding: 10px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      font-weight: 800;
+      color: #172554;
+    }
+
+    .relations-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .relations-grid div {
+      padding: 10px 16px;
+      border-bottom: 1px solid #eef2f7;
+      font-size: 14px;
+    }
+
+    .relations-grid div:nth-child(odd) {
+      border-left: 1px solid #eef2f7;
+    }
+
+    code {
+      direction: ltr;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    @media print {
+      body { background: white; }
+
+      .page {
+        width: auto;
+        max-width: none;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 8mm;
+      }
+
+      .diagram {
+        transform: scale(0.81);
+        transform-origin: top center;
+        margin-bottom: -165px;
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 6mm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="badge">ER Diagram</div>
+      <h1>نمودار ER سامانه کتابخانه الکترونیکی</h1>
+      <p class="subtitle">نمایش موجودیت‌ها، کلیدهای اصلی، کلیدهای خارجی و رابطه‌های پایگاه داده</p>
+    </header>
+
+    <section class="diagram">
+      <svg class="lines" viewBox="0 0 1400 940" xmlns="http://www.w3.org/2000/svg">
+        <!-- Book_Category to Book -->
+        <path class="line" d="M450 240 L525 240 L565 320" />
+        <!-- Category to Book_Category -->
+        <path class="line" d="M245 390 L245 340 L295 285" />
+
+        <!-- Book_Author to Book -->
+        <path class="line" d="M950 240 L875 240 L835 320" />
+        <!-- Author to Book_Author -->
+        <path class="line" d="M1165 390 L1165 340 L1110 285" />
+
+        <!-- Book to Book_Edition -->
+        <path class="line" d="M700 470 L700 620" />
+
+        <!-- Translator to Book_Edition -->
+        <path class="line" d="M435 815 L505 815 L550 760" />
+
+        <!-- Publisher to Book_Edition -->
+        <path class="line" d="M965 815 L895 815 L850 760" />
+      </svg>
+
+      <!-- Cardinalities -->
+      <!-- Book_Category <-> Book -->
+      <span class="cardinality" style="left: 430px; top: 220px;">N</span>
+      <span class="cardinality" style="left: 532px; top: 305px;">1</span>
+
+      <!-- Category <-> Book_Category -->
+      <span class="cardinality" style="left: 228px; top: 350px;">1</span>
+      <span class="cardinality" style="left: 283px; top: 268px;">N</span>
+
+      <!-- Book_Author <-> Book -->
+      <span class="cardinality" style="left: 938px; top: 220px;">N</span>
+      <span class="cardinality" style="left: 836px; top: 305px;">1</span>
+
+      <!-- Author <-> Book_Author -->
+      <span class="cardinality" style="left: 1148px; top: 350px;">1</span>
+      <span class="cardinality" style="left: 1088px; top: 268px;">N</span>
+
+      <!-- Book <-> Book_Edition -->
+      <span class="cardinality" style="left: 718px; top: 468px;">1</span>
+      <span class="cardinality" style="left: 718px; top: 585px;">N</span>
+
+      <!-- Translator <-> Book_Edition -->
+      <span class="cardinality" style="left: 440px; top: 795px;">1</span>
+      <span class="cardinality" style="left: 520px; top: 742px;">N</span>
+
+      <!-- Publisher <-> Book_Edition -->
+      <span class="cardinality" style="left: 928px; top: 795px;">1</span>
+      <span class="cardinality" style="left: 838px; top: 742px;">N</span>
+
+      <article class="entity book">
+        <div class="entity-title">Book / کتاب</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">book_id</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">title</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">original_year</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">rating</span></li>
+        </ul>
+      </article>
+
+      <article class="entity junction book-author">
+        <div class="entity-title">Book_Author</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">book_id + author_id</span></li>
+          <li class="fk"><span class="key">FK</span><span class="field-name">book_id</span></li>
+          <li class="fk"><span class="key">FK</span><span class="field-name">author_id</span></li>
+        </ul>
+      </article>
+
+      <article class="entity author">
+        <div class="entity-title">Author / نویسنده</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">author_id</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">author_name</span></li>
+        </ul>
+      </article>
+
+      <article class="entity junction book-category">
+        <div class="entity-title">Book_Category</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">book_id + category_id</span></li>
+          <li class="fk"><span class="key">FK</span><span class="field-name">book_id</span></li>
+          <li class="fk"><span class="key">FK</span><span class="field-name">category_id</span></li>
+        </ul>
+      </article>
+
+      <article class="entity category">
+        <div class="entity-title">Category / دسته‌بندی</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">category_id</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">category_name</span></li>
+        </ul>
+      </article>
+
+      <article class="entity edition">
+        <div class="entity-title">Book_Edition / نسخه کتاب</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">edition_id</span></li>
+          <li class="fk"><span class="key">FK</span><span class="field-name">book_id</span></li>
+          <li class="fk"><span class="key">FK</span><span class="field-name">translator_id</span></li>
+          <li class="fk"><span class="key">FK</span><span class="field-name">publisher_id</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">page_count</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">print_count</span></li>
+        </ul>
+      </article>
+
+      <article class="entity translator">
+        <div class="entity-title">Translator / مترجم</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">translator_id</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">translator_name</span></li>
+        </ul>
+      </article>
+
+      <article class="entity publisher">
+        <div class="entity-title">Publisher / ناشر</div>
+        <ul class="fields">
+          <li class="pk"><span class="key">PK</span><span class="field-name">publisher_id</span></li>
+          <li class="normal"><span class="key">Attr</span><span class="field-name">publisher_name</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="legend">
+      <div class="legend-item"><span class="dot blue"></span>موجودیت اصلی کتاب</div>
+      <div class="legend-item"><span class="dot green"></span>نویسنده و دسته‌بندی</div>
+      <div class="legend-item"><span class="dot orange"></span>مترجم و ناشر</div>
+      <div class="legend-item"><span class="dot purple"></span>نسخه یا ترجمه کتاب</div>
+    </section>
+
+    <section class="relations">
+      <div class="relations-title">توضیح رابطه‌ها</div>
+      <div class="relations-grid">
+        <div><code>Book 1:N Book_Author N:1 Author</code> — رابطه چند به چند کتاب و نویسنده</div>
+        <div><code>Book 1:N Book_Category N:1 Category</code> — رابطه چند به چند کتاب و دسته‌بندی</div>
+        <div><code>Book 1:N Book_Edition</code> — هر کتاب می‌تواند چند نسخه داشته باشد</div>
+        <div><code>Translator 1:N Book_Edition</code> — هر مترجم می‌تواند چند نسخه را ترجمه کند</div>
+        <div><code>Publisher 1:N Book_Edition</code> — هر ناشر می‌تواند چند نسخه را منتشر کند</div>
+        <div><code>PK / FK</code> — کلید اصلی و کلید خارجی برای حفظ ارتباط بین جدول‌ها</div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
